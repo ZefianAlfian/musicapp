@@ -4,7 +4,6 @@ import path from "path";
 import fs from "fs";
 import downloadFile from "./utils/downloadFile";
 import searchMusic from "./utils/searchMusic";
-import ErrorResponse from "./utils/errorResponse";
 import downloadMusic from "./utils/downloadMusic";
 
 const app = express();
@@ -17,16 +16,12 @@ app.use(express.static(path.join(__dirname, "/../public")));
 app.get("/downloadMusic", async (req, res) => {
   try {
     const id = req.query.id;
-    const unic_title = req.query.unic_title;
 
     if (!id) {
       return res.status(403).json({ message: "input query id" });
     }
-    if (!unic_title) {
-      return res.status(403).json({ message: "input query unic_title" });
-    }
 
-    let arr = await downloadMusic(id as string, unic_title as string);
+    let arr = await downloadMusic(id as string);
     res.status(200).json(arr);
   } catch (err) {
     res.status(500).json({ message: "internal server error" });
@@ -34,7 +29,7 @@ app.get("/downloadMusic", async (req, res) => {
   }
 });
 
-app.get("/getImg", async (req, res, next) => {
+app.get("/getImg", async (req, res) => {
   try {
     const id = req.query.id;
     const filePath = path.join(
