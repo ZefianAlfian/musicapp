@@ -1,20 +1,6 @@
 import "dotenv/config";
 import fetch from "node-fetch";
-
-enum Quality {
-  LOW = 1,
-  HIGH = 3,
-  FLAC = 5,
-}
-
-interface FileMeta {
-  cdn: string;
-  hash: string;
-}
-
-interface DownloadOptions {
-  quality?: Quality;
-}
+import { Quality, DownloadOptions, FileMeta, Media } from "../interfaces";
 
 const getDownloadMusic = async (id: string, options?: DownloadOptions) => {
   // default options
@@ -36,6 +22,7 @@ const getDownloadMusic = async (id: string, options?: DownloadOptions) => {
     MEDIA_VERSION: media,
     SNG_TITLE: title,
     ART_NAME: artist,
+    MEDIA,
   } = metaData;
 
   // get file meta data
@@ -46,12 +33,13 @@ const getDownloadMusic = async (id: string, options?: DownloadOptions) => {
     `https://flacless.com/file?${queryString}`
   );
   const { cdn, hash }: FileMeta = await fileMetaResponse.json();
-
-  console.log(metaData);
+  const isiMedia: Media[] = MEDIA;
+  const [{ HREF: preview }] = isiMedia;
   return {
     title,
     artist,
     quality: quality.toString(),
+    preview,
     download: `https://e-cdns-proxy-${cdn}.dzcdn.net/mobile/1/${hash}`,
   };
 };
