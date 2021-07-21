@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import path from "path";
 import fs from "fs";
+import cors from "cors";
 import downloadFile from "./utils/downloadFile";
 import searchMusic from "./utils/searchMusic";
 import downloadMusic from "./utils/downloadMusic";
@@ -11,11 +12,14 @@ const { PORT } = process.env;
 const baseURL = "http://flacless.com";
 
 app.set("json spaces", 2);
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "/../public")));
 
 app.get("/downloadMusic", async (req, res) => {
   try {
-    const id = req.query.id;
+    const id = req.body.id;
 
     if (!id) {
       return res.status(403).json({ message: "input query id" });
