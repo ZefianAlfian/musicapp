@@ -47,7 +47,7 @@ app.get("/getImg", async (req, res) => {
       res.status(200).sendFile(filePath);
       setTimeout(() => {
         fs.unlinkSync(filePath);
-      }, 10 * 1000);
+      }, 10 * 60000);
     });
   } catch (err) {
     res.status(500).json({ message: "internal server error" });
