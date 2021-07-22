@@ -6,7 +6,7 @@ export default function Search({ query }) {
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/search-music/?q=" + query)
+    fetch("https://spotiday.herokuapp.com/search-music/?q=" + query)
       .then((src) => src.json())
       .then((data) => {
         setSearchResults(data);
@@ -19,7 +19,7 @@ export default function Search({ query }) {
         <div className="row">
           {searchResults.map((items) => (
             <Card
-              src={items.thumb_id}
+              src={items.thumb}
               title={items.title}
               artist={items.penyanyi}
               id={items.id}

@@ -6,6 +6,8 @@ import cors from "cors";
 import downloadFile from "./utils/downloadFile";
 import searchMusic from "./utils/searchMusic";
 import downloadMusic from "./utils/downloadMusic";
+import "./interfaces";
+import { DownloadOptions, Quality } from "./interfaces";
 
 const app = express();
 const { PORT } = process.env;
@@ -19,13 +21,24 @@ app.use(express.static(path.join(__dirname, "/../public")));
 
 app.get("/downloadMusic", async (req, res) => {
   try {
-    const id = req.body.id;
+    const id = req.query.id;
+    const qualityInput = req.query.quality;
 
     if (!id) {
       return res.status(403).json({ message: "input query id" });
     }
-
-    let arr = await downloadMusic(id as string);
+    if (!qualityInput) {
+      return res.status(403).json({ message: "input query quality" });
+    }
+    let quality =
+      qualityInput == "low"
+        ? Quality.LOW
+        : qualityInput == "high"
+        ? Quality.HIGH
+        : qualityInput == "flac"
+        ? Quality.FLAC
+        : Quality.LOW;
+    let arr = await downloadMusic(id as string, { quality });
     res.status(200).json(arr);
   } catch (err) {
     res.status(500).json({ message: "internal server error" });

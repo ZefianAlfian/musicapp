@@ -18,7 +18,7 @@ export default async function searchMusic(q: string) {
     title: string | undefined;
     unic_title: string | undefined;
     penyanyi: string | undefined;
-    thumb_id: string | undefined;
+    thumb: string | undefined;
   }[] = [];
   $("a.w-full").each(function () {
     const id = $(this)
@@ -28,11 +28,11 @@ export default async function searchMusic(q: string) {
     const title = $(this).find("div.card-title").text().trim();
     const unic_title = $(this).attr("href")?.replace(`/track/${id}/`, "");
     const penyanyi = $(this).find("p.card-body").text().trim();
-    const thumb_id = `${BASE_URL}/getImg?id=${$(this)
+    const thumb = `${BASE_URL}/getImg?id=${$(this)
       .find("img.lazy")
       .attr("data-src")
       ?.replace(`/image?id=`, "")}`;
-    arr.push({ id, title, unic_title, penyanyi, thumb_id });
+    arr.push({ id, title, unic_title, penyanyi, thumb });
   });
   return arr;
 }

@@ -2,7 +2,7 @@ import "dotenv/config";
 import fetch from "node-fetch";
 import { Quality, DownloadOptions, FileMeta, Media } from "../interfaces";
 
-const getDownloadMusic = async (id: string, options?: DownloadOptions) => {
+const downloadMusic = async (id: string, options?: DownloadOptions) => {
   // default options
   const { quality }: DownloadOptions = {
     quality: Quality.HIGH,
@@ -44,4 +44,4 @@ const getDownloadMusic = async (id: string, options?: DownloadOptions) => {
   };
 };
 
-export default getDownloadMusic;
+export default downloadMusic;
